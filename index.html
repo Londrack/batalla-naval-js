@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Prueba</title>
+<link href="est.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+<div id="cont">
+    <div id="comp" class="caja"></div>
+    <div id="user" class="caja"></div>
+</div>
+<div id="form">
+	<form action="send.php" method="post" name="contacto" id ="contacto">
+    	<label>Nombre</label>
+        <input name="nombre" type="text" /><br />
+        <label>E-mail</label>
+        <input name="email" type="text" /><br />
+        <label>Comentarios</label>
+        <textarea name="opinion" placeholder="Aca puedes dejar tus comentarios: si has visto algún error o bug, por favor hazlo saber. No critiques el diseño ¬¬, esto es apenas una primera prueba, aún no está ni en pañales, de todas maneras cualquier retroalimentación es agradecida por el gran orden de las cosas que aún no son"></textarea>
+        <input type="submit" value="Enviar formulario">
+    </form>
+</div>
+</body>
+
+<!--<script src="jquery.js"></script>-->
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="script/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="script/functions.js"></script>
+<script src="script/constBarc.js"></script>
+<script src="script/constBarcComp.js"></script>
+<script>
+
+$(document).ready(function(){
+	var anchoCaja = $('#cont').width()-1;
+	var numCasill = 5;
+	var anchCasill = (anchoCaja-numCasill)/numCasill;
+	var distCajas = parseInt($('.caja').css('margin-bottom'));
+	//var anchBarc = 3;
+	//
+	var movTime = 300;
+	var movPant = false;
+	//
+
+	for(var i = 0; i<(numCasill*numCasill); i++ ){
+		var x, y, n;
+		y = i/numCasill;
+		y = parseInt(y);
+		x = i;
+		n = y * numCasill;
+		x = i - n;
+		var id = x+"_"+y;
+
+		var casilla = '<div class="casilla" id="'+id+'"><div class="golpe"></div></div>';
+		$('#comp').append(casilla);
+		$('#user').append(casilla);
+	};
+
+	$('.casilla, .golpe').css({width:anchCasill+'px',height:anchCasill+'px'});
+	//
+
+	//$('.barco').css({height:anchCasill+'px',width:anchCasill*anchBarc+'px'});
+	var varFijas = [distCajas, anchCasill, movTime, numCasill];
+
+	/***	CREACION DE BARCOS - ALEATORIO!!!	***/
+	var cantCas = Math.floor((numCasill*numCasill)/3);
+	var nBarc = 0;
+	for(var i = 1; i < cantCas;){
+		nBarc++;
+		var tam = Math.floor((Math.random()*2)+2);
+
+		if(i+tam > cantCas)
+			tam = cantCas-i
+		if(tam == 1)
+			tam = 2
+
+		var vert = Math.floor((Math.random()*3)+1);
+
+		if(vert == 3){
+			var barc = new Barco(varFijas,'barc'+nBarc,'img/nav1.png',1,tam);
+		}else{
+			var barc = new Barco(varFijas,'barc'+nBarc,'img/nav1.png',tam);
+		}
+		i += tam;
+	}
+	/**/
+	var nBarcC = 0;
+	for(var i = 1; i < cantCas;){
+		nBarcC++;
+		var tam = Math.floor((Math.random()*2)+2);
+
+		if(i+tam > cantCas)
+			tam = cantCas-i
+		if(tam == 1)
+			tam = 2
+
+		var vert = Math.floor((Math.random()*3)+1);
+
+		if(vert == 3){
+			var barcC = new BarcoComp(varFijas,'barcC'+nBarcC,'img/nav2.png',1,tam);
+		}else{
+			var barcC = new BarcoComp(varFijas,'barcC'+nBarcC,'img/nav2.png',tam);
+		}
+		i += tam;
+	}
+
+	/**/
+	$(window).scrollTop($(document).height());
+	$(window).scroll(function(){
+		$(this).scrollTop($(document).height()).scrollLeft(0);
+	})
+	/**/
+
+	//////////INICIA////////////
+	var btn = '<div id="inicia" style="width:'+anchCasill*2+'px; height:'+anchCasill+'px; "></div>'
+	$('#user').append(btn);
+	$('#inicia').click(function(){
+
+		if($('.noValid').length === 0){
+			$(this).remove();
+			var ini = numRam();
+			var dif = numRam();
+			jugar(ini, dif)
+		}else{
+			alert('Alguno de tus barcos está en mala posición. Por favor acomodalo antes de comenzar')
+		}
+	})
+	/**/
+});
+
+</script>
+</html>
