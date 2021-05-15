@@ -2,7 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Prueba</title>
+<title>Batalla naval en JS</title>
+<meta name="description" content="Batalla naval en JS">
+<meta name="keywords" content="HTML, CSS, JavaScript">
+<meta name="author" content="Alejandro Mejia @Londrack">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="est.css" rel="stylesheet" type="text/css" />
 
 </head>
@@ -35,31 +39,52 @@
 <script>
 
 $(document).ready(function(){
-	var anchoCaja = $('#cont').width()-1;
-	var numCasill = 5;
-	var anchCasill = (anchoCaja-numCasill)/numCasill;
-	var distCajas = parseInt($('.caja').css('margin-bottom'));
-	//var anchBarc = 3;
-	//
-	var movTime = 300;
-	var movPant = false;
-	//
+	const anchoCaja = document.getElementById("cont").offsetWidth-1
 
-	for(var i = 0; i<(numCasill*numCasill); i++ ){
-		var x, y, n;
+	//Establece el numero de casillas del tablero
+	const numCasill = 5
+
+	//Determina el tamaño y la distancia de las casillas según el número
+	const anchCasill = (anchoCaja-numCasill)/numCasill
+	const caja1 = document.querySelector('.caja')
+	const styleCaja1 = getComputedStyle(caja1)
+	const distCajas = parseInt(styleCaja1.marginBottom)
+
+	//tiempo para el movimiento
+	const movTime = 300;
+	const movPant = false;
+
+	//Crea las casillas
+	for(let i = 0; i<(numCasill*numCasill); i++ ){
+		let x, y, n;
 		y = i/numCasill;
 		y = parseInt(y);
 		x = i;
 		n = y * numCasill;
 		x = i - n;
-		var id = x+"_"+y;
 
-		var casilla = '<div class="casilla" id="'+id+'"><div class="golpe"></div></div>';
-		$('#comp').append(casilla);
-		$('#user').append(casilla);
+		//Id en la matriz de casillas
+		let id = x+"_"+y;
+
+		let casilla = '<div class="casilla" id="'+id+'"><div class="golpe"></div></div>';
+		document.querySelector('#comp').insertAdjacentHTML('beforeend', casilla);
+		document.querySelector('#user').insertAdjacentHTML('beforeend', casilla);
 	};
 
-	$('.casilla, .golpe').css({width:anchCasill+'px',height:anchCasill+'px'});
+
+	//$('.casilla, .golpe').css({width:anchCasill+'px',height:anchCasill+'px'});
+	const golpes = document.querySelectorAll('.golpe')
+	golpes.forEach(function(el, ind) {
+		console.log(el)
+		el.style.width = anchCasill+'px';
+		el.style.height = anchCasill+'px';
+	});
+
+	const casillas = document.querySelectorAll('.casilla')
+	casillas.forEach(function(el, ind) {
+		el.style.width = anchCasill+'px';
+		el.style.height = anchCasill+'px';
+	});
 	//
 
 	//$('.barco').css({height:anchCasill+'px',width:anchCasill*anchBarc+'px'});
