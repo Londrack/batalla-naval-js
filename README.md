@@ -1,2 +1,2 @@
-# batalla-naval-js
-Juego de batalla naval creado por mi
+# Batalla naval en JS
+Juego de batalla naval creado por mi :)
